@@ -1,0 +1,15 @@
+{% extends "base" %}
+
+{% block content %}
+<h1>New question for {{uid}}</h1>
+<form action="/arbeit/submit" method="post" accept-charset="utf-8">
+  <textarea placeholder="Put your question here"
+    name="question" rows="5" cols="50"></textarea>
+  <textarea placeholder="Put your answer here"
+    name="answer" rows="5" cols="50"></textarea>
+  <p><input type="submit" value="Submit Question"></p>
+</form>
+
+<a href="/">Home</a>
+{% endblock content %}
+

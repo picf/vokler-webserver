@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+  postgres_vokler:
+    image: postgres:13.3
+    container_name: postgres_vokler
+    environment:
+      - POSTGRES_USER=vokler
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=vokler
+    network_mode: bridge
+    ports:
+      - "5435:5432"
+    command: ["postgres", "-c", "log_statement=all"]
+networks:
+  default:
+    external:
+      name: bridge
