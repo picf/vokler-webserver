@@ -1,0 +1,7 @@
+{% extends "base" %}
+
+{% block content %}
+<h1>HOME</h1>
+<a href="arbeit/submit">Submit a question</a> or <a href="arbeit/test">Carry out a test</a>
+{% endblock content %}
+

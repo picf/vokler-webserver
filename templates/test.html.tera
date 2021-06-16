@@ -1,0 +1,13 @@
+{% extends "base" %}
+
+{% block content %}
+<h1>P'tit Test</h1>
+<form action="/arbeit/test_answer" method="post" accept-charset="utf-8">
+  {{question}}     
+  <textarea placeholder="Put your answer here"
+    name="answer" rows="1" cols="50"></textarea>
+  <input type="submit" value="Submit Answer">
+</form>
+
+<a href="/">Home</a>
+{% endblock content %}

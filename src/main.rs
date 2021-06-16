@@ -8,20 +8,17 @@ extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
 
-use rocket::response::content::Html;
-use rocket_contrib::databases::diesel;
 use rocket_contrib::templates::Template;
+use std::collections::HashMap;
 
-#[database("my_pg_db")]
-struct VoklerDbConn(diesel::PgConnection);
 mod arbeit;
+mod db_conn;
 mod session;
 
 #[get("/")]
-fn home() -> Html<&'static str> {
-    Html(
-        r#"<a href="arbeit/submit">Submit a question</a> or <a href="arbeit/test">Carry out a test</a>."#,
-    )
+fn home() -> Template {
+    let context: HashMap<String, String> = HashMap::new();
+    Template::render("home", context)
 }
 
 fn main() {
@@ -29,6 +26,6 @@ fn main() {
         .mount("/", routes![home])
         .mount("/arbeit", arbeit::routes())
         .attach(Template::fairing())
-        .attach(VoklerDbConn::fairing())
+        .attach(db_conn::VoklerDbConn::fairing())
         .launch();
 }

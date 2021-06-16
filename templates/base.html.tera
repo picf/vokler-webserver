@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Tera Demo</title>
+    <title>Vokler</title>
   </head>
   <body>
     {% block content %}{% endblock content %}
