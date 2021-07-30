@@ -4,6 +4,8 @@ use rocket::request::Form;
 use rocket::response::Redirect;
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
+use std::fmt;
+use std::str::FromStr;
 
 #[derive(FromForm)]
 struct AnswerTest {
@@ -15,6 +17,34 @@ struct SubmitInput {
     question: String,
     answer: String,
 }
+
+pub enum TestType {
+    age,
+    score,
+}
+
+impl fmt::Display for TestType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            TestType::age => write!(f, "age"),
+            TestType::score => write!(f, "score"),
+        }
+    }
+}
+
+impl FromStr for TestType {
+    type Err = ();
+
+    fn from_str(input: &str) -> Result<TestType, Self::Err> {
+        match input {
+            "age" => Ok(TestType::age),
+            "score" => Ok(TestType::score),
+            _ => Err(()),
+        }
+    }
+}
+
+const DEFAULT_TEST_TYPE: TestType = TestType::score;
 
 #[post("/test_answer", data = "<answer_test>")]
 fn test_answer(
@@ -66,8 +96,15 @@ fn test_error(mut cookies: Cookies) -> Template {
 #[get("/test")]
 fn test(conn: db_conn::VoklerDbConn, mut cookies: Cookies) -> Template {
     let mut context: HashMap<String, String> = HashMap::new();
-    let (ques, ans, id) = db_conn::get_question(conn);
+
+    let test_type = match cookies.get_private("test_type") {
+        None => DEFAULT_TEST_TYPE,
+        Some(answer) => answer.value().parse::<TestType>().unwrap(),
+    };
+
+    let (ques, ans, id) = db_conn::get_question(conn, &test_type);
     context.insert("question".to_string(), ques.to_string());
+    cookies.add_private(Cookie::new("test_type", test_type.to_string()));
     cookies.add_private(Cookie::new("question", ques.to_string()));
     cookies.add_private(Cookie::new("answer", ans));
     cookies.add_private(Cookie::new("id", id.to_string()));

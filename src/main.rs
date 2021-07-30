@@ -13,6 +13,7 @@ use std::collections::HashMap;
 
 mod arbeit;
 mod db_conn;
+mod req;
 mod session;
 
 #[get("/")]

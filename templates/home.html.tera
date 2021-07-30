@@ -2,6 +2,9 @@
 
 {% block content %}
 <h1>HOME</h1>
-<a href="arbeit/submit">Submit a question</a> or <a href="arbeit/test">Carry out a test</a>
+<ul>
+    <li> <a href="arbeit/submit">Submit a question</a> </li>
+    <li><a href="arbeit/test_score"> Test</a> </li>
+</ul>
 {% endblock content %}
 
