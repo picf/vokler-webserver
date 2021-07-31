@@ -4,7 +4,7 @@
 <h1>HOME</h1>
 <ul>
     <li> <a href="arbeit/submit">Submit a question</a> </li>
-    <li><a href="arbeit/test_score"> Test</a> </li>
+    <li><a href="arbeit/test"> Test</a> </li>
 </ul>
 {% endblock content %}
 

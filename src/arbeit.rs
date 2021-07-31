@@ -10,6 +10,7 @@ use std::str::FromStr;
 #[derive(FromForm)]
 struct AnswerTest {
     answer: String,
+    test_type: String,
 }
 
 #[derive(FromForm)]
@@ -65,9 +66,11 @@ fn test_answer(
         Some(id) => id.value().to_string(),
     };
     if answer_test.answer == answer {
+        cookies.add_private(Cookie::new("test_type", answer_test.test_type.to_string()));
         db_conn::update_question(conn, id.parse::<i32>().unwrap(), true);
         Redirect::to("/arbeit/test")
     } else {
+        cookies.add_private(Cookie::new("test_type", answer_test.test_type.to_string()));
         db_conn::update_question(conn, id.parse::<i32>().unwrap(), false);
         Redirect::to("/arbeit/test_error")
     }
@@ -104,6 +107,13 @@ fn test(conn: db_conn::VoklerDbConn, mut cookies: Cookies) -> Template {
 
     let (ques, ans, id) = db_conn::get_question(conn, &test_type);
     context.insert("question".to_string(), ques.to_string());
+    context.insert("test_type".to_string(), test_type.to_string());
+    let (checked_age, checked_score) = match test_type {
+        TestType::age => ("checked", ""),
+        TestType::score => ("", "checked"),
+    };
+    context.insert("checked_age".to_string(), checked_age.to_string());
+    context.insert("checked_score".to_string(), checked_score.to_string());
     cookies.add_private(Cookie::new("test_type", test_type.to_string()));
     cookies.add_private(Cookie::new("question", ques.to_string()));
     cookies.add_private(Cookie::new("answer", ans));

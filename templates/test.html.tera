@@ -1,13 +1,19 @@
 {% extends "base" %}
 
 {% block content %}
-<h1>P'tit Test</h1>
+<h3>Test selected by <b class="term">{{test_type}}</b></h3>
 <form action="/arbeit/test_answer" method="post" accept-charset="utf-8">
   {{question}}     
   <textarea placeholder="Put your answer here"
     name="answer" rows="1" cols="50"></textarea>
   <input type="submit" value="Submit Answer">
+  <br>
+  <input type="radio" id="test_type1" name="test_type" value="age" {{checked_age}} >
+  <label for="age1">age</label>
+  <input type="radio" id="test_type2" name="test_type" value="score" {{checked_score}} >
+  <label for="age2">score</label>  
 </form>
 
+  <br>
 <a href="/">Home</a>
 {% endblock content %}

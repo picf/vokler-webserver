@@ -19,7 +19,11 @@ pub fn add_new_question(conn: VoklerDbConn, question: String, answer: String) {
 }
 
 pub fn get_question(conn: VoklerDbConn, test_type: &TestType) -> (String, String, i32) {
-    let res = conn.query(req::REQ_BY_SCORE, &[]).unwrap();
+    let question_req = match test_type {
+        TestType::age => req::REQ_BY_AGE,
+        TestType::score => req::REQ_BY_SCORE,
+    };
+    let res = conn.query(question_req, &[]).unwrap();
     let row = res.get(0);
     return (row.get("question"), row.get("answer"), row.get("id"));
 }
